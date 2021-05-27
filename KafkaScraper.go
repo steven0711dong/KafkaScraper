@@ -8,7 +8,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"unsafe"
 )
 
 var totalMsg int
@@ -68,9 +67,9 @@ func main() {
 		if r.URL.Path == "/stats" {
 			//if r.URL.Query().Get("reset") != "" eg. ur := "https://hello.google.com/stat?name=Branch&products=[Journeys,Email,Universal%20Ads]"
 			receivedMsg.Mu.Lock()
-			s := displayReceivedMessages(fmt.Sprintf("received: %d dups: %d and size of map is: %d\n", receivedMsg.totalMessages, receivedMsg.dups, unsafe.Sizeof(&receivedMsg.data)))
+			res := fmt.Sprintf("received: %d dups: %d ", receivedMsg.totalMessages, receivedMsg.dups)
 			receivedMsg.Mu.Unlock()
-			w.Write([]byte(s))
+			w.Write([]byte(res))
 			return
 		} else if r.URL.Path == "/reset" {
 			receivedMsg.Mu.Lock()
